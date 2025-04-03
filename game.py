@@ -9,6 +9,7 @@ class game_2048:
         self.GRID_SIZE = 4
         self.LINE_WIDTH = 4
         self.CELL_SIZE = self.SCREEN_WIDTH // self.GRID_SIZE
+        self.score = 0
         self.grid = [[2, 2, 0, 0],
                      [4, 2, 0, 0],
                      [4, 2, 2, 0],
@@ -28,8 +29,9 @@ class game_2048:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    row, col = self.generate_random_tile()
-                    self.grid[row][col] = 2
+                    # row, col = self.generate_random_tile()
+                    # self.grid[row][col] = 2
+                    pass
 
                 elif event.key == pygame.K_w:
                     self.move_up()
@@ -39,6 +41,9 @@ class game_2048:
 
                 elif event.key == pygame.K_a:
                     self.move_left()
+
+                elif event.key == pygame.K_d:
+                    self.move_right()
 
         self.win.fill((255, 255, 255))
         self.draw_grid()
@@ -93,11 +98,32 @@ class game_2048:
         pass
 
     def move_right(self):
-        pass
+        for row in self.grid:
+            cell_is_merged = [False for x in range(self.GRID_SIZE)]
+            for index, col in enumerate(row[:self.GRID_SIZE - 1]):
+                col_index = self.GRID_SIZE - index - 2
+                if row[col_index] != 0:
+                    counter = 0
+                    for i in range(index + 1):
+                        index_2 = col_index + 1 + i
+                        if row[index_2] == 0:
+                            counter += 1
+
+                        elif row[col_index] == row[index_2] and not cell_is_merged[index_2]:
+                            counter += 1
+                            cell_is_merged[index_2] = True
+                            row[col_index] += row[col_index]
+                            break
+
+                    if counter != 0:
+                        row[col_index + counter] = row[col_index]
+                        row[col_index] = 0
+
+
 
     def move_left(self):
         for row in self.grid:
-            cell_is_merged = [False for x in range(len(row))]
+            cell_is_merged = [False for x in range(len(row[1:]))]
             for index, col in enumerate(row[1:]):
                 if col != 0:
                     col_index = index + 1
