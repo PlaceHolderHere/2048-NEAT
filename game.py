@@ -100,18 +100,18 @@ class game_2048:
     def move_right(self):
         for row in self.grid:
             cell_is_merged = [False for x in range(self.GRID_SIZE)]
-            for index, col in enumerate(row[:self.GRID_SIZE - 1]):
+            for index, col in enumerate(row[:self.GRID_SIZE - 1]):  # iterates over every column except for rightmost
                 col_index = self.GRID_SIZE - index - 2
                 if row[col_index] != 0:
                     counter = 0
-                    for i in range(index + 1):
-                        index_2 = col_index + 1 + i
-                        if row[index_2] == 0:
+                    for i in range(index + 1):  # iterates over every column to the right of col_index
+                        col_index_2 = col_index + 1 + i
+                        if row[col_index_2] == 0:
                             counter += 1
 
-                        elif row[col_index] == row[index_2] and not cell_is_merged[index_2]:
+                        elif row[col_index] == row[col_index_2] and not cell_is_merged[col_index_2]:
                             counter += 1
-                            cell_is_merged[index_2] = True
+                            cell_is_merged[col_index_2] = True
                             row[col_index] += row[col_index]
                             break
 
@@ -124,27 +124,24 @@ class game_2048:
     def move_left(self):
         for row in self.grid:
             cell_is_merged = [False for x in range(len(row[1:]))]
-            for index, col in enumerate(row[1:]):
+            for index, col in enumerate(row[1:]):  # iterates over every column except for leftmost
                 if col != 0:
                     col_index = index + 1
                     counter = 0
-                    merged = False
-                    for i in range(col_index):
-                        index_2 = index - i
-                        if row[index_2] == 0:
+                    for i in range(col_index):  # iterates over every column to the left of col_index
+                        col_index_2 = index - i
+                        if row[col_index_2] == 0:
                             counter += 1
 
-                        elif row[index_2] == row[col_index] and not cell_is_merged[index_2]:
+                        elif row[col_index_2] == row[col_index] and not cell_is_merged[col_index_2]:
                             counter += 1
-                            merged = True
+                            cell_is_merged[col_index_2] = True
                             row[col_index] += row[col_index]
                             break
 
                     if counter != 0:
                         row[col_index - counter] = row[col_index]
                         row[col_index] = 0
-                        if merged:
-                            cell_is_merged[col_index - counter] = True
 
     def check_if_legal(self):
         pass
