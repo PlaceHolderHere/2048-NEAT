@@ -2,7 +2,8 @@ import pygame
 import random
 import copy
 
-class game_2048:
+
+class Game2048:
     def __init__(self):
         self.SCREEN_HEIGHT = 650
         self.SCREEN_WIDTH = 600
@@ -13,8 +14,7 @@ class game_2048:
         self.grid = [[2, 0, 0, 0],
                      [4, 0, 0, 0],
                      [4, 0, 0, 0],
-                     [2, 0, 0, 0]]
-            # [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
+                     [2, 0, 0, 0]]  # [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
         self.alive = True
 
         # Pygame Init
@@ -64,18 +64,23 @@ class game_2048:
         #             return row_index, col_index
 
     def draw_grid(self):
-        pygame.draw.rect(self.win, (0, 0, 0), (self.SCREEN_WIDTH - self.LINE_WIDTH, 50, self.LINE_WIDTH, self.SCREEN_HEIGHT - 50))
-        pygame.draw.rect(self.win, (0, 0, 0), (0, self.SCREEN_HEIGHT - self.LINE_WIDTH, self.SCREEN_WIDTH, self.LINE_WIDTH))
+        pygame.draw.rect(self.win, (0, 0, 0),
+                         (self.SCREEN_WIDTH - self.LINE_WIDTH, 50, self.LINE_WIDTH, self.SCREEN_HEIGHT - 50))
+        pygame.draw.rect(self.win, (0, 0, 0),
+                         (0, self.SCREEN_HEIGHT - self.LINE_WIDTH, self.SCREEN_WIDTH, self.LINE_WIDTH))
         for row_index, row in enumerate(self.grid):
-            pygame.draw.rect(self.win, (0, 0, 0), (row_index * self.CELL_SIZE, 50, self.LINE_WIDTH, self.SCREEN_HEIGHT - 50))
-            pygame.draw.rect(self.win, (0, 0, 0), (0, row_index * self.CELL_SIZE + 50, self.SCREEN_WIDTH, self.LINE_WIDTH))
+            pygame.draw.rect(self.win, (0, 0, 0),
+                             (row_index * self.CELL_SIZE, 50, self.LINE_WIDTH, self.SCREEN_HEIGHT - 50))
+            pygame.draw.rect(self.win, (0, 0, 0),
+                             (0, row_index * self.CELL_SIZE + 50, self.SCREEN_WIDTH, self.LINE_WIDTH))
             for col_index, col in enumerate(row):
                 if col != 0:
                     cell_x = (col_index * self.CELL_SIZE) + self.LINE_WIDTH * 1.5
                     cell_y = (row_index * self.CELL_SIZE) + self.LINE_WIDTH * 1.5 + 50
-                    pygame.draw.rect(self.win, (255, 255, 125), (cell_x, cell_y,
-                                                                 self.CELL_SIZE - (self.LINE_WIDTH * 2), self.CELL_SIZE - (self.LINE_WIDTH * 2)))
-                    self.display_text(cell_x + (self.CELL_SIZE // 2), cell_y + (self.CELL_SIZE // 2), col, (0, 0, 0))
+                    pygame.draw.rect(self.win, (255, 255, 125), (
+                        cell_x, cell_y, self.CELL_SIZE - (self.LINE_WIDTH * 2), self.CELL_SIZE - (self.LINE_WIDTH * 2)))
+                    self.display_text(
+                        cell_x + (self.CELL_SIZE // 2), cell_y + (self.CELL_SIZE // 2), col, (0, 0, 0))
 
     def display_text(self, x, y, msg, color):
         pygame.font.init()
@@ -106,7 +111,8 @@ class game_2048:
                         elif self.grid[row_index][col_index] != self.grid[row_index_2][col_index]:
                             break
 
-                        elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index] and not cell_is_merged[row_index_2]:
+                        elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index] and not \
+                                cell_is_merged[row_index_2]:
                             counter += 1
                             cell_is_merged[row_index_2] = True
                             self.grid[row_index][col_index] += self.grid[row_index][col_index]
@@ -132,7 +138,7 @@ class game_2048:
                             break
 
                         elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index] and not \
-                        cell_is_merged[row_index_2]:
+                                cell_is_merged[row_index_2]:
                             counter += 1
                             cell_is_merged[row_index_2] = True
                             self.grid[row_index][col_index] += self.grid[row_index][col_index]
