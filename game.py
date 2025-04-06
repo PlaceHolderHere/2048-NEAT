@@ -10,10 +10,10 @@ class game_2048:
         self.LINE_WIDTH = 4
         self.CELL_SIZE = self.SCREEN_WIDTH // self.GRID_SIZE
         self.score = 0
-        self.grid = [[2, 2, 0, 0],
-                     [4, 2, 0, 0],
-                     [4, 2, 2, 0],
-                     [2, 2, 4, 0]]
+        self.grid = [[2, 0, 0, 0],
+                     [4, 0, 0, 0],
+                     [4, 0, 0, 0],
+                     [2, 0, 0, 0]]
             # [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
         self.alive = True
 
@@ -85,14 +85,36 @@ class game_2048:
 
         self.win.blit(text, text_rect)
 
-    def move_up(self):
-        pass
-
     # Testing Function
     def print_grid(self):
         for row in self.grid:
             print(row)
         print('----------------------------------')
+
+    def move_up(self):
+        for col_index in range(self.GRID_SIZE): # Performs Algorithm over every column
+            cell_is_merged = [False for x in range(self.GRID_SIZE)]
+            for row_index in range(self.GRID_SIZE - 1):  # Skip topmost row
+                row_index += 1
+                if self.grid[row_index][col_index] != 0:
+                    counter = 0
+                    for i in range(row_index):  # iterates over every row above row_index
+                        row_index_2 = row_index - 1 - i
+                        if self.grid[row_index_2][col_index] == 0:
+                            counter += 1
+
+                        elif self.grid[row_index][col_index] != self.grid[row_index_2][col_index]:
+                            break
+
+                        elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index] and not cell_is_merged[row_index_2]:
+                            counter += 1
+                            cell_is_merged[row_index_2] = True
+                            self.grid[row_index][col_index] += self.grid[row_index][col_index]
+                            break
+
+                    if counter != 0:
+                        self.grid[row_index - counter][col_index] = self.grid[row_index][col_index]
+                        self.grid[row_index][col_index] = 0
 
     def move_down(self):
         pass
@@ -109,6 +131,9 @@ class game_2048:
                         if row[col_index_2] == 0:
                             counter += 1
 
+                        elif row[col_index] != row[col_index_2]:
+                            break
+
                         elif row[col_index] == row[col_index_2] and not cell_is_merged[col_index_2]:
                             counter += 1
                             cell_is_merged[col_index_2] = True
@@ -118,8 +143,6 @@ class game_2048:
                     if counter != 0:
                         row[col_index + counter] = row[col_index]
                         row[col_index] = 0
-
-
 
     def move_left(self):
         for row in self.grid:
@@ -132,6 +155,9 @@ class game_2048:
                         col_index_2 = index - i
                         if row[col_index_2] == 0:
                             counter += 1
+
+                        elif row[col_index] != row[col_index_2]:
+                            break
 
                         elif row[col_index_2] == row[col_index] and not cell_is_merged[col_index_2]:
                             counter += 1
