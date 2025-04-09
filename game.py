@@ -11,13 +11,10 @@ class Game2048:
         self.LINE_WIDTH = 4
         self.CELL_SIZE = self.SCREEN_WIDTH // self.GRID_SIZE
         self.score = 0
-        self.grid = [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
-        self.generate_random_tile()
-        self.generate_random_tile()
-        # self.grid = [[2, 0, 0, 0],
-        #              [4, 0, 0, 0],
-        #              [4, 0, 0, 0],
-        #              [2, 0, 0, 0]]  #
+        self.grid = [[2, 0, 0, 0],
+                     [4, 0, 0, 0],
+                     [4, 0, 0, 0],
+                     [2, 0, 0, 0]]  # [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
         self.alive = True
 
         # Pygame Init
@@ -32,51 +29,39 @@ class Game2048:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    self.generate_random_tile()
+                    # row, col = self.generate_random_tile()
+                    # self.grid[row][col] = 2
+                    pass
 
                 elif event.key == pygame.K_w:
-                    if self.move_up():
-                        self.generate_random_tile()
-                        print(self.score)
+                    self.move_up()
 
                 elif event.key == pygame.K_s:
-                    if self.move_down():
-                        self.generate_random_tile()
-                        print(self.score)
+                    self.move_down()
 
                 elif event.key == pygame.K_a:
-                    if self.move_left():
-                        self.generate_random_tile()
-                        print(self.score)
+                    self.move_left()
 
                 elif event.key == pygame.K_d:
-                    if self.move_right():
-                        self.generate_random_tile()
-                        print(self.score)
+                    self.move_right()
 
         self.win.fill((255, 255, 255))
         self.draw_grid()
         pygame.display.update()
 
-    def get_empty_tiles(self):
-        empty_cells = []
-        for row_index, row in enumerate(self.grid):
-            for col_index, col in enumerate(row):
-                if col == 0:
-                    empty_cells.append((row_index, col_index))
-
-        return empty_cells
-
     def generate_random_tile(self):  # broken
-        empty_cells = self.get_empty_tiles()
-        if len(empty_cells) != 0:
-            rand_cell = random.randint(0, len(empty_cells) - 1)
-            rand_cell_value = random.randint(1, 10)
-            if rand_cell_value < 9:
-                self.grid[empty_cells[rand_cell][0]][empty_cells[rand_cell][1]] = 2
-
-            else:
-                self.grid[empty_cells[rand_cell][0]][empty_cells[rand_cell][1]] = 4
+        pass
+        # shuffled_rows = copy.deepcopy(self.grid)
+        # random.shuffle(shuffled_rows)
+        #
+        # col_indices = list(range(len(shuffled_rows[0])))
+        # random.shuffle(col_indices)
+        # shuffled_tiles = [[row[i] for i in col_indices] for row in shuffled_rows]
+        #
+        # for row_index, row in enumerate(shuffled_tiles):
+        #     for col_index, col in enumerate(row):
+        #         if col == 0:
+        #             return row_index, col_index
 
     def draw_grid(self):
         pygame.draw.rect(self.win, (0, 0, 0),
@@ -112,7 +97,6 @@ class Game2048:
         print('----------------------------------')
 
     def move_up(self):
-        changed = False
         for col_index in range(self.GRID_SIZE):  # Performs Algorithm over every column
             cell_is_merged = [False for x in range(self.GRID_SIZE)]
             for row_index in range(self.GRID_SIZE - 1):  # Skip topmost row
@@ -132,17 +116,13 @@ class Game2048:
                             counter += 1
                             cell_is_merged[row_index_2] = True
                             self.grid[row_index][col_index] += self.grid[row_index][col_index]
-                            self.score += self.grid[row_index][col_index]
                             break
 
                     if counter != 0:
                         self.grid[row_index - counter][col_index] = self.grid[row_index][col_index]
                         self.grid[row_index][col_index] = 0
-                        changed = True
-        return changed
 
     def move_down(self):
-        changed = False
         for col_index in range(self.GRID_SIZE):  # Performs Algorithm over every column
             cell_is_merged = [False for x in range(self.GRID_SIZE)]
             for index in range(self.GRID_SIZE - 1):  # Skip bottom row
@@ -162,17 +142,13 @@ class Game2048:
                             counter += 1
                             cell_is_merged[row_index_2] = True
                             self.grid[row_index][col_index] += self.grid[row_index][col_index]
-                            self.score += self.grid[row_index][col_index]
                             break
 
                     if counter != 0:
                         self.grid[row_index + counter][col_index] = self.grid[row_index][col_index]
                         self.grid[row_index][col_index] = 0
-                        changed = True
-        return changed
 
     def move_right(self):
-        changed = False
         for row in self.grid:
             cell_is_merged = [False for x in range(self.GRID_SIZE)]
             for index, col in enumerate(row[:self.GRID_SIZE - 1]):  # iterates over every column except for rightmost
@@ -191,17 +167,13 @@ class Game2048:
                             counter += 1
                             cell_is_merged[col_index_2] = True
                             row[col_index] += row[col_index]
-                            self.score += row[col_index]
                             break
 
                     if counter != 0:
                         row[col_index + counter] = row[col_index]
                         row[col_index] = 0
-                        changed = True
-        return changed
 
     def move_left(self):
-        changed = False
         for row in self.grid:
             cell_is_merged = [False for x in range(len(row[1:]))]
             for index, col in enumerate(row[1:]):  # iterates over every column except for leftmost
@@ -220,14 +192,14 @@ class Game2048:
                             counter += 1
                             cell_is_merged[col_index_2] = True
                             row[col_index] += row[col_index]
-                            self.score += row[col_index]
                             break
 
                     if counter != 0:
                         row[col_index - counter] = row[col_index]
                         row[col_index] = 0
-                        changed = True
-        return changed
+
+    def check_if_legal(self):
+        pass
 
     def no_legal_moves(self):
         pass
