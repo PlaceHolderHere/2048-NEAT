@@ -13,10 +13,6 @@ class Game2048:
         self.grid = [[0 for e in range(self.GRID_SIZE)] for i in range(self.GRID_SIZE)]
         self.generate_random_tile()
         self.generate_random_tile()
-        # self.grid = [[2, 0, 0, 0],
-        #              [4, 0, 0, 0],
-        #              [4, 0, 0, 0],
-        #              [2, 0, 0, 0]]  #
         self.alive = True
 
         # Pygame Init
