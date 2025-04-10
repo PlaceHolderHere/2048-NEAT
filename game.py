@@ -24,6 +24,7 @@ class Game2048:
         self.win = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
     def update(self):
+        self.win.fill((255, 255, 255))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.alive = False
@@ -36,24 +37,20 @@ class Game2048:
                 elif event.key == pygame.K_w:
                     if self.move_up():
                         self.generate_random_tile()
-                        print(self.score)
 
                 elif event.key == pygame.K_s:
                     if self.move_down():
                         self.generate_random_tile()
-                        print(self.score)
 
                 elif event.key == pygame.K_a:
                     if self.move_left():
                         self.generate_random_tile()
-                        print(self.score)
 
                 elif event.key == pygame.K_d:
                     if self.move_right():
                         self.generate_random_tile()
-                        print(self.score)
 
-        self.win.fill((255, 255, 255))
+        self.display_text(self.SCREEN_WIDTH // 2, 25, str(self.score), (0, 0, 0))
         self.draw_grid()
         pygame.display.update()
 
