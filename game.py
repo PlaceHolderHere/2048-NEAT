@@ -229,4 +229,68 @@ class Game2048:
         return changed
 
     def no_legal_moves(self):
-        pass
+        # Move_Left
+        for row in self.grid:
+            for index, col in enumerate(row[1:]):  # iterates over every column except for leftmost
+                if col != 0:
+                    col_index = index + 1
+                    for i in range(col_index):  # iterates over every column to the left of col_index
+                        col_index_2 = index - i
+                        if row[col_index_2] == 0:
+                            return False
+
+                        elif row[col_index] != row[col_index_2]:
+                            break
+
+                        elif row[col_index_2] == row[col_index]:
+                            return False
+
+        # Move Right
+        for row in self.grid:
+            for index, col in enumerate(row[:self.GRID_SIZE - 1]):  # iterates over every column except for rightmost
+                col_index = self.GRID_SIZE - index - 2
+                if row[col_index] != 0:
+                    for i in range(index + 1):  # iterates over every column to the right of col_index
+                        col_index_2 = col_index + 1 + i
+                        if row[col_index_2] == 0:
+                            return False
+
+                        elif row[col_index] != row[col_index_2]:
+                            break
+
+                        elif row[col_index] == row[col_index_2]:
+                            return False
+
+        # Move Up
+        for col_index in range(self.GRID_SIZE):  # Performs Algorithm over every column
+            for row_index in range(self.GRID_SIZE - 1):  # Skip topmost row
+                row_index += 1
+                if self.grid[row_index][col_index] != 0:
+                    for i in range(row_index):  # iterates over every row above row_index
+                        row_index_2 = row_index - 1 - i
+                        if self.grid[row_index_2][col_index] == 0:
+                            return False
+
+                        elif self.grid[row_index][col_index] != self.grid[row_index_2][col_index]:
+                            break
+
+                        elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index]:
+                            return False
+
+        # Move Down
+        for col_index in range(self.GRID_SIZE):  # Performs Algorithm over every column
+            for index in range(self.GRID_SIZE - 1):  # Skip bottom row
+                row_index = self.GRID_SIZE - 2 - index
+                if self.grid[row_index][col_index] != 0:
+                    for i in range(index + 1):  # iterates over every row above row_index
+                        row_index_2 = row_index + 1 + i
+                        if self.grid[row_index_2][col_index] == 0:
+                            return False
+
+                        elif self.grid[row_index][col_index] != self.grid[row_index_2][col_index]:
+                            break
+
+                        elif self.grid[row_index][col_index] == self.grid[row_index_2][col_index]:
+                            return False
+
+        return True
