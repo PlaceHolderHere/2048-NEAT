@@ -287,3 +287,9 @@ class Game2048:
                             return False
 
         return True
+
+    def get_inputs(self):
+        inputs = []
+        for row in self.grid:
+            inputs += row
+        return inputs
