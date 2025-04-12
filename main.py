@@ -27,7 +27,19 @@ def eval_genomes(genomes, config, num_moves):
         genome.fitness = environment.score()
 
 
+def run_neat(config):
+    # Variables
+    # population = neat.Checkpointer.restore_checkpoint('neat-checkpoint-1')
+    population = neat.Population(config)
 
+    # Reporters
+    population.add_reporter(neat.StdOutReporter(True))
+    population.add_reporter(neat.StatisticsReporter())
+    population.add_reporter(neat.Checkpointer(1))
+
+    winner = population.run(eval_genomes, 50)
+    with open('best.pickle', 'wb') as f:
+        pickle.dump(winner, f)
 
 # env = game.Game2048()
 # while env.alive:
