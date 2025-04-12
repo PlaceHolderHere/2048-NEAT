@@ -41,9 +41,15 @@ def run_neat(config):
     with open('best.pickle', 'wb') as f:
         pickle.dump(winner, f)
 
-# env = game.Game2048()
-# while env.alive:
-#     env.update()
-#     if env.no_legal_moves():
-#         print(f'score:{env.score}')
-#         env.alive = False
+
+if __name__ == '__main__':
+    config_path = "config.txt"
+    config = neat.Config(
+        neat.DefaultGenome,
+        neat.DefaultReproduction,
+        neat.DefaultSpeciesSet,
+        neat.DefaultStagnation,
+        config_path
+    )
+
+    run_neat(config)
