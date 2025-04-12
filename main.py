@@ -13,13 +13,17 @@ def eval_genomes(genomes, config):
             decision = output.index(max(output))  # [Up, Down, Left, Right]
 
             if decision == 0:
-                environment.move_up()
+                if environment.move_up():
+                    environment.generate_random_tile()
             elif decision == 1:
-                environment.move_down()
+                if environment.move_down():
+                    environment.generate_random_tile()
             elif decision == 2:
-                environment.move_left()
+                if environment.move_left():
+                    environment.generate_random_tile()
             elif decision == 3:
-                environment.move_right()
+                if environment.move_right():
+                    environment.generate_random_tile()
 
             environment.update()
             if environment.no_legal_moves():
