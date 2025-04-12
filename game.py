@@ -26,26 +26,6 @@ class Game2048:
                 self.alive = False
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.generate_random_tile()
-
-                elif event.key == pygame.K_w:
-                    if self.move_up():
-                        self.generate_random_tile()
-
-                elif event.key == pygame.K_s:
-                    if self.move_down():
-                        self.generate_random_tile()
-
-                elif event.key == pygame.K_a:
-                    if self.move_left():
-                        self.generate_random_tile()
-
-                elif event.key == pygame.K_d:
-                    if self.move_right():
-                        self.generate_random_tile()
-
         self.display_text(self.SCREEN_WIDTH // 2, 25, str(self.score), (0, 0, 0))
         self.draw_grid()
         pygame.display.update()
@@ -59,7 +39,7 @@ class Game2048:
 
         return empty_cells
 
-    def generate_random_tile(self):  # broken
+    def generate_random_tile(self):
         empty_cells = self.get_empty_tiles()
         if len(empty_cells) != 0:
             rand_cell = random.randint(0, len(empty_cells) - 1)
@@ -96,12 +76,6 @@ class Game2048:
         text_rect = text.get_rect(center=(x, y))
 
         self.win.blit(text, text_rect)
-
-    # Testing Function
-    def print_grid(self):
-        for row in self.grid:
-            print(row)
-        print('----------------------------------')
 
     def move_up(self):
         changed = False
