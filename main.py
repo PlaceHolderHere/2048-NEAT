@@ -25,7 +25,7 @@ def eval_genomes(genomes, config):
             if environment.no_legal_moves():
                 break
 
-        genome.fitness = environment.score()
+        genome.fitness = environment.score
 
 
 def run_neat(config):
