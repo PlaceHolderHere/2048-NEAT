@@ -3,7 +3,8 @@ import neat
 import pickle
 
 
-def eval_genomes(genomes, config, num_moves):
+def eval_genomes(genomes, config):
+    num_moves = 100
     for i, (genome_id, genome) in enumerate(genomes):
         environment = game.Game2048()
         neural_net = neat.nn.FeedForwardNetwork.create(genome, config)
