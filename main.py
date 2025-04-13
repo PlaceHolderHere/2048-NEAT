@@ -51,7 +51,7 @@ def eval_genomes(genomes, configuration):
             if environment.no_legal_moves() or sequential_illegal_moves >= 50:
                 break
 
-        highest_tile = [max(max(row) for row in environment.grid)]
+        highest_tile = max(max(row) for row in environment.grid)
         genome.fitness = calculate_fitness(environment.score, highest_tile, num_illegal_moves)
 
 
