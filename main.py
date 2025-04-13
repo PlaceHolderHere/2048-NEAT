@@ -13,25 +13,26 @@ def eval_genomes(genomes, configuration):
         environment = game.Game2048()
         neural_net = neat.nn.FeedForwardNetwork.create(genome, configuration)
         for e in range(num_moves):
-            output = neural_net.activate(environment.get_inputs())
-            decisions = output.index(max(output))  # [Up, Down, Left, Right]
-            for decision in decisions:
-                if decision == 0:
+            outputs = neural_net.activate(environment.get_inputs())
+            sorted_output = sorted(range(len(outputs)), key=lambda x: outputs[x], reverse=True)
+
+            for output in sorted_output:
+                if output == 0:
                     if environment.move_up():
                         environment.generate_random_tile()
                         break
 
-                elif decision == 1:
+                elif output == 1:
                     if environment.move_down():
                         environment.generate_random_tile()
                         break
 
-                elif decision == 2:
+                elif output == 2:
                     if environment.move_left():
                         environment.generate_random_tile()
                         break
 
-                elif decision == 3:
+                elif output == 3:
                     if environment.move_right():
                         environment.generate_random_tile()
                         break
