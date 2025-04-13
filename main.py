@@ -4,7 +4,7 @@ import pickle
 
 
 def calculate_fitness(score, illegal_moves, highest_tile):
-    return score + (highest_tile * 10) + (illegal_moves * 20)
+    return score + (highest_tile * 20) - (illegal_moves * 5)
 
 
 def eval_genomes(genomes, configuration):
@@ -52,12 +52,13 @@ def eval_genomes(genomes, configuration):
                 break
 
         highest_tile = max(max(row) for row in environment.grid)
+        print(f'{i}. highest_tile: {highest_tile} | illegal_moves: {num_illegal_moves} | score:{environment.score}')
         genome.fitness = calculate_fitness(environment.score, highest_tile, num_illegal_moves)
 
 
 def run_neat(configuration):
     # Variables
-    # population = neat.Checkpointer.restore_checkpoint('neat-checkpoint-29')
+    # population = neat.Checkpointer.restore_checkpoint('neat-checkpoint-52')
     population = neat.Population(configuration)
 
     # Reporters
@@ -65,7 +66,7 @@ def run_neat(configuration):
     population.add_reporter(neat.StatisticsReporter())
     population.add_reporter(neat.Checkpointer(1))
 
-    winner = population.run(eval_genomes, 100)
+    winner = population.run(eval_genomes, 300)
     with open('best.pickle', 'wb') as f:
         pickle.dump(winner, f)
 
