@@ -65,7 +65,7 @@ def run_neat(configuration):
     population.add_reporter(neat.StatisticsReporter())
     population.add_reporter(neat.Checkpointer(1))
 
-    winner = population.run(eval_genomes, 50)
+    winner = population.run(eval_genomes, 100)
     with open('best.pickle', 'wb') as f:
         pickle.dump(winner, f)
 
