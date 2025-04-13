@@ -4,7 +4,7 @@ import pickle
 
 
 def calculate_fitness(score, illegal_moves, highest_tile):
-    return score + (highest_tile * 20) - (illegal_moves * 5)
+    return score + (highest_tile * 10) - (illegal_moves * 10)
 
 
 def eval_genomes(genomes, configuration):
@@ -52,6 +52,7 @@ def eval_genomes(genomes, configuration):
                 break
 
         highest_tile = max(max(row) for row in environment.grid)
+        highest_tile = highest_tile if highest_tile > 4 else 0
         print(f'{i}. highest_tile: {highest_tile} | illegal_moves: {num_illegal_moves} | score:{environment.score}')
         genome.fitness = calculate_fitness(environment.score, highest_tile, num_illegal_moves)
 
