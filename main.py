@@ -8,9 +8,10 @@ def calculate_fitness(score, illegal_moves, highest_tile):
 
 
 def eval_genomes(genomes, configuration):
-    num_moves = 100
+    num_moves = 1000
     for i, (genome_id, genome) in enumerate(genomes):
         num_illegal_moves = 0
+        sequential_illegal_moves = 0
         environment = game.Game2048()
         neural_net = neat.nn.FeedForwardNetwork.create(genome, configuration)
         for e in range(num_moves):
@@ -20,26 +21,34 @@ def eval_genomes(genomes, configuration):
             if decision == 0:
                 if environment.move_up():
                     environment.generate_random_tile()
+                    sequential_illegal_moves = 0
                 else:
+                    sequential_illegal_moves += 1
                     num_illegal_moves += 1
             elif decision == 1:
                 if environment.move_down():
                     environment.generate_random_tile()
+                    sequential_illegal_moves = 0
                 else:
+                    sequential_illegal_moves += 1
                     num_illegal_moves += 1
             elif decision == 2:
                 if environment.move_left():
                     environment.generate_random_tile()
+                    sequential_illegal_moves = 0
                 else:
+                    sequential_illegal_moves += 1
                     num_illegal_moves += 1
             elif decision == 3:
                 if environment.move_right():
                     environment.generate_random_tile()
+                    sequential_illegal_moves = 0
                 else:
+                    sequential_illegal_moves += 1
                     num_illegal_moves += 1
 
             environment.update()
-            if environment.no_legal_moves():
+            if environment.no_legal_moves() or sequential_illegal_moves >= 50:
                 break
 
         highest_tile = [max(max(row) for row in environment.grid)]
