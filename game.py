@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 
 class Game2048:
@@ -266,4 +267,4 @@ class Game2048:
         inputs = []
         for row in self.grid:
             inputs += row
-        return inputs
+        return [0 if tile == 0 else math.log2(tile) / 16 for tile in inputs]
