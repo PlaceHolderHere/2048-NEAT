@@ -10,13 +10,13 @@ max_stagnation       = 20
 species_elitism      = 2
 
 [DefaultReproduction]
-elitism            = 2
+elitism            = 3
 survival_threshold = 0.2
 
 [DefaultGenome]
 # node activation options
 activation_default      = relu
-activation_mutate_rate  = 1.0
+activation_mutate_rate  = 0.0
 activation_options      = relu
 
 # node aggregation options
