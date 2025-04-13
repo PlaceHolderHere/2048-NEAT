@@ -3,11 +3,16 @@ import neat
 import pickle
 
 
-def eval_genomes(genomes, config):
+def calculate_fitness(score, illegal_moves, highest_tile):
+    return score + (highest_tile * 10) + (illegal_moves * 20)
+
+
+def eval_genomes(genomes, configuration):
     num_moves = 100
     for i, (genome_id, genome) in enumerate(genomes):
+        num_illegal_moves = 0
         environment = game.Game2048()
-        neural_net = neat.nn.FeedForwardNetwork.create(genome, config)
+        neural_net = neat.nn.FeedForwardNetwork.create(genome, configuration)
         for e in range(num_moves):
             output = neural_net.activate(environment.get_inputs())
             decision = output.index(max(output))  # [Up, Down, Left, Right]
@@ -15,27 +20,36 @@ def eval_genomes(genomes, config):
             if decision == 0:
                 if environment.move_up():
                     environment.generate_random_tile()
+                else:
+                    num_illegal_moves += 1
             elif decision == 1:
                 if environment.move_down():
                     environment.generate_random_tile()
+                else:
+                    num_illegal_moves += 1
             elif decision == 2:
                 if environment.move_left():
                     environment.generate_random_tile()
+                else:
+                    num_illegal_moves += 1
             elif decision == 3:
                 if environment.move_right():
                     environment.generate_random_tile()
+                else:
+                    num_illegal_moves += 1
 
             environment.update()
             if environment.no_legal_moves():
                 break
 
-        genome.fitness = environment.score
+        highest_tile = [max(max(row) for row in environment.grid)]
+        genome.fitness = calculate_fitness(environment.score, highest_tile, num_illegal_moves)
 
 
-def run_neat(config):
+def run_neat(configuration):
     # Variables
-    # population = neat.Checkpointer.restore_checkpoint('neat-checkpoint-1')
-    population = neat.Population(config)
+    # population = neat.Checkpointer.restore_checkpoint('neat-checkpoint-29')
+    population = neat.Population(configuration)
 
     # Reporters
     population.add_reporter(neat.StdOutReporter(True))
